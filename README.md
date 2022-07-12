@@ -1,6 +1,6 @@
 # fromJson
 
-从指定json文件中查找指定节点
+从指定json文件（远程获取或者本地json文件）中查找指定节点
 ```
 usage: fromJson.py [-h] [-u URL] [-p PARAM] [-f FILE] [-o OUTPUT]
 
