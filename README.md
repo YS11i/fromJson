@@ -15,3 +15,5 @@ options:
 
 Example: python3 .\fromJson.py -u/-f url/file -p param -o result.txt
 ```
+
+查找的参数中不能出现`.`目前还没有好的解决方法--
