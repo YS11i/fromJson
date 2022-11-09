@@ -13,6 +13,8 @@ def parse_args():
     parser.add_argument("-p", "--param", help="find param")
     parser.add_argument("-f", "--file", help="local file")
     parser.add_argument("-o", "--output", help="output result")
+    parser.add_argument("-k", "--key", help="getkeys input 1")
+
 
     return parser.parse_args()
 
@@ -83,6 +85,7 @@ if __name__ == '__main__':
 	url = args.url
 	findStr = args.param
 	fileName = args.output
+	key = args.key
 	if path == None and url == None and fileName == None:
 	    print('\tExample: \r\npython3 ' + sys.argv[0] + " -u/-f url/file -p param")
 	    exit()
@@ -105,6 +108,11 @@ if __name__ == '__main__':
 		if resStr != False:
 			#print(resStr)
 			for i in resStr:
+				if key != None:
+					#print(list(i.keys()))
+					for j in list(i.keys()):
+						print(j)
+					exit()
 				print(i)
 			if fileName != None:
 				outputRes(resStr,fileName)
