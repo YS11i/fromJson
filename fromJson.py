@@ -61,7 +61,7 @@ def fromFile(path,findStr):
 			file_json = json.loads(jsonFile)
 			#print(jsonFile)
 	except:
-		return "Can't open local file!"
+		print("Can't open local file!")
 
 	resStr = jsonpath.jsonpath(file_json, "$..{}".format(findStr))
 	return resStr
@@ -78,44 +78,69 @@ def outputRes(resStr,fileName):
 		csvf.close()
 
 
+
+
+
+
 if __name__ == '__main__':
 	args = parse_args()
+	path = None
+	url = None
+	findStr = None
+	fileName = None
+	key = None
+
 	path = args.file
 	url = args.url
 	findStr = args.param
 	fileName = args.output
 	key = args.key
+
 	if path == None and url == None and fileName == None:
 	    print('\tExample: \r\npython3 ' + sys.argv[0] + " -u/-f url/file -p param")
 	    exit()
-	if (url != None or path != None) and (findStr != None or key != None):
-		if url == None:
-			
-			resStr = fromFile(path,findStr)
-			#print(resStr)
-			if resStr != False:
-				for i in resStr:
-					if key != None:
-						#print(list(i.keys()))
-						for j in list(i.keys()): #获取非末端节点的key值
-							print(j)
-						exit()
-					print(i)
-				if fileName != None:
-					outputRes(resStr,fileName)
+
+	if url == None and path != None and findStr != None:
+		resStr = fromFile(path,findStr)
+		if fileName != None:
+			outputRes(resStr,fileName)		
+		#print(resStr)
+		for i in resStr:
+			if isinstance(i,dict):
+				if key != None:
+					#print(list(i.keys()))
+					for j in list(i.keys()): #获取非末端节点的key值
+						print(j)
+					#exit()
+				print(i)
+			elif isinstance(i,int) or isinstance(i,float) or isinstance(i,complex) or isinstance(i,str):
+				print(i)
+			elif isinstance(i,list):
+				for j in i:
+					print(j)
+
+
 
 			
-		else:
-			resStr = fromHttp(url,findStr)
-			if resStr != False:
-			#print(resStr)
-				for i in resStr:
-					if key != None:
-						#print(list(i.keys()))
-						for j in list(i.keys()): #获取非末端节点的key值
-							print(j)
-						exit()
-					print(i)
-			if fileName != None:
-				outputRes(resStr,fileName)
+	elif url != None and path == None and findStr != None:
+		resStr = fromHttp(url,findStr)
+		if fileName != None:
+			outputRes(resStr,fileName)		
+		#print(resStr)
+		for i in resStr:
+			if isinstance(i,list) or isinstance(i,dict):
+				if key != None :
+					#print(list(i.keys()))
+					for j in list(i.keys()): #获取非末端节点的key值
+						print(j)
+					exit()
+				print(i)
+			elif isinstance(i,int) or isinstance(i,float) or isinstance(i,complex) or isinstance(i,str):
+				print(i)
 
+			elif isinstance(i,list):
+				for j in i:
+					print(j)			
+
+	else:
+		print("输入参数异常...")
