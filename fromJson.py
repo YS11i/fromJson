@@ -64,7 +64,6 @@ def fromFile(path,findStr):
 		return "Can't open local file!"
 
 	resStr = jsonpath.jsonpath(file_json, "$..{}".format(findStr))
-
 	return resStr
 	
 def outputRes(resStr,fileName):
@@ -89,36 +88,34 @@ if __name__ == '__main__':
 	if path == None and url == None and fileName == None:
 	    print('\tExample: \r\npython3 ' + sys.argv[0] + " -u/-f url/file -p param")
 	    exit()
-	if url == None and findStr != None:
-		resStr = fromFile(path,findStr)
-		#print(resStr)
-		if resStr != False:
-			for i in resStr:
-				print(i)
-			if fileName != None:
-				outputRes(resStr,fileName)
-			else:
-				print('\tExample: \r\npython3 ' + sys.argv[0] + " -u/-f url/file -p param")
-				exit()
-		else:
-			exit()
-
-	if path == None and findStr != None:
-		resStr = fromHttp(url,findStr)
-		if resStr != False:
+	if (url != None or path != None) and (findStr != None or key != None):
+		if url == None:
+			
+			resStr = fromFile(path,findStr)
 			#print(resStr)
-			for i in resStr:
-				if key != None:
-					#print(list(i.keys()))
-					for j in list(i.keys()):
-						print(j)
-					exit()
-				print(i)
+			if resStr != False:
+				for i in resStr:
+					if key != None:
+						#print(list(i.keys()))
+						for j in list(i.keys()): #获取非末端节点的key值
+							print(j)
+						exit()
+					print(i)
+				if fileName != None:
+					outputRes(resStr,fileName)
+
+			
+		else:
+			resStr = fromHttp(url,findStr)
+			if resStr != False:
+			#print(resStr)
+				for i in resStr:
+					if key != None:
+						#print(list(i.keys()))
+						for j in list(i.keys()): #获取非末端节点的key值
+							print(j)
+						exit()
+					print(i)
 			if fileName != None:
 				outputRes(resStr,fileName)
-		else:
-			exit()
-	else:
-		print('\tExample: \r\npython3 ' + sys.argv[0] + " -u/-f url/file -p param")
-		exit()
 
