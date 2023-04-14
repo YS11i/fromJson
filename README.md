@@ -16,5 +16,11 @@ options:
 
 Example: python3 .\fromJson.py -u/-f url/file -p param -o result.txt
 ```
+查找非末端节点会返回对应key的字典，使用-k 1参数获取对应字典的key
+
+查找末端节点会返回对应key的value
+
+
+
 -k参数筛选key
 查找的参数中不能出现`.`目前还没有好的解决方法--
